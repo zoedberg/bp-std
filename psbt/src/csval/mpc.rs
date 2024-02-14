@@ -58,7 +58,7 @@ impl PropKey {
     }
 
     /// Constructs [`PSBT_OUT_MPC_ENTROPY`] proprietary key.
-    fn mpc_entropy() -> PropKey {
+    pub fn mpc_entropy() -> PropKey {
         PropKey {
             identifier: PSBT_MPC_PREFIX.to_owned(),
             subtype: PSBT_OUT_MPC_ENTROPY,
