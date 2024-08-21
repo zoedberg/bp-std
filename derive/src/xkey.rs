@@ -1035,4 +1035,20 @@ mod test {
         let xpub = XpubDerivable::from_str(s).unwrap();
         assert_eq!(s, format!("{xpub:#}"));
     }
+
+    #[test]
+    fn test_xpriv_account_from_str() {
+        use bc::secp256k1::rand::{self, RngCore};
+
+        let mut seed = vec![0u8; 128];
+        rand::thread_rng().fill_bytes(&mut seed);
+        let xpriv = Xpriv::new_master(true, &seed);
+        let xpub = xpriv.to_xpub();
+        let master_fp = xpub.fingerprint();
+        let derivation = DerivationPath::<HardenedIndex>::from_str("86'/1'/0'").unwrap();
+        let origin = XkeyOrigin::new(master_fp, derivation);
+        let xpriv_account = XprivAccount::new(xpriv, origin.clone());
+        let xpriv_account_str = xpriv_account.to_string();
+        XprivAccount::from_str(&xpriv_account_str).unwrap();
+    }
 }
